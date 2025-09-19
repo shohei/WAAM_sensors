@@ -33,7 +33,9 @@ void loop() {
     //Serial.print((value >> 3), BIN); //bit<15:3>のみ2進表示
     //Serial.print(", ");
     Serial.print((value >> 3) * 0.25); //bit<15:3>のみ表示、MAX6675仕様(分解能 0.25℃)
-    Serial.println(" degC");
+    Serial.print(",");
+    int val2 = analogRead(A0); //random value
+    Serial.println(val2);
   } 
   
 }
