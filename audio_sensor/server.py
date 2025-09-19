@@ -20,7 +20,7 @@ app = Flask(__name__)
 # グローバル変数
 audio = None
 stream = None
-device_index = 1 
+device_index = None 
 lock = threading.Lock()
 
 def audiostart(dev_index):
