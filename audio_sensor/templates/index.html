@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-time Audio Spectrogram</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .spectrogram-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 20px 0;
+        }
+        #spectrogram {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .info {
+            background-color: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Real-time Audio Spectrogram</h1>
+        
+        <div class="info">
+            <p><strong>Instructions:</strong> This page displays a real-time spectrogram of your audio input. 
+            Make sure your microphone is connected and permissions are granted.</p>
+        </div>
+        
+        <div class="spectrogram-container">
+            <h2>Live Spectrogram</h2>
+            <img id="spectrogram" src="{{ url_for('spectrogram') }}" alt="Real-time Audio Spectrogram">
+        </div>
+    </div>
+
+    <script>
+        // 画像の読み込みエラーを処理
+        document.getElementById('spectrogram').onerror = function() {
+            console.log('Failed to load spectrogram image');
+            setTimeout(() => {
+                this.src = this.src; // 再読み込み
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
