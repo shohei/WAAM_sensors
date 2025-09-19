@@ -18,7 +18,7 @@ void setup() {
 void loop() { 
   
   //温度データ読み出し
-  delay(500);                       // MAX6675仕様(Conversion Time > 220ms)
+  delay(100);                       // MAX6675仕様(Conversion Time > 220ms)
   digitalWrite(SS, LOW);            // 制御デバイス選択(Enable)
   value = SPI.transfer(0x00) << 8;  // 上位ビット8bit読み出し後8bit左にシフト
   value |= SPI.transfer(0x00);      // 下位ビット8bit読み出し後上位ビットとOR

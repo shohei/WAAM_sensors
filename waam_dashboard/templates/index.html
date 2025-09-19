@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Arduino Sensor Dashboard</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Arduino Sensor Data</h1>
+    <canvas id="sensorChart" width="600" height="400"></canvas>
+
+    <script>
+        const socket = io("http://waam2.local:5000", {
+            transports: ["websocket"]
+        });
+
+        // Chart.js グラフの初期設定
+        const ctx = document.getElementById('sensorChart').getContext('2d');
+        const sensorChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],  // X軸（時間）
+                datasets: [{
+                    label: 'Sensor Value',
+                    data: [],
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Time'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Sensor Value'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 接続時の処理
+        socket.on("connect", () => {
+            console.log("Connected to server");
+        });
+
+        // サーバからデータ受信時
+        socket.on("sensor_data", (data) => {
+            const value = parseFloat(data.value);
+            const now = new Date().toLocaleTimeString();
+
+            // グラフに追加
+            sensorChart.data.labels.push(now);
+            sensorChart.data.datasets[0].data.push(value);
+
+            // データ点が多くなりすぎたら古いのを削除（例: 最新50点だけ保持）
+            if (sensorChart.data.labels.length > 50) {
+                sensorChart.data.labels.shift();
+                sensorChart.data.datasets[0].data.shift();
+            }
+
+            sensorChart.update();
+        });
+    </script>
+</body>
+</html>
+
